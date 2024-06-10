@@ -1,25 +1,25 @@
 const { User, Thought } = require('../models');
 
 module.exports = {
-  // Get all users
+
   async getUsers(req, res) {
     try {
       const users = await User.find()
         .select('-__v')
-        .populate({ path: 'thoughts', select: '-__v -username' })
+        .populate({ path: 'thoughts', select: '-__v' })
         .populate({ path: 'friends', select: '-__v' });
       res.json(users);
     } catch (err) {
       res.status(500).json(err);
+      console.log("this is not working");
     }
   },
 
-  // Get single user
   async getSingleUser(req, res) {
     try {
       const user = await User.findOne({ _id: req.params.userId })
         .select('-__v')
-        .populate({ path: 'thoughts', select: '-__v -username' })
+        .populate({ path: 'thoughts', select: '-__v' })
         .populate({ path: 'friends', select: '-__v' });
 
       if (!user) {
@@ -32,7 +32,7 @@ module.exports = {
     }
   },
 
-  // Create user
+  // Creates user
   async createUser(req, res) {
     try {
       const user = await User.create(req.body);
@@ -43,7 +43,7 @@ module.exports = {
     }
   },
 
-  // Delete user
+  // Deletes user
   async deleteUser(req, res) {
     try {
       const user = await User.findOneAndDelete({ _id: req.params.userId });
@@ -62,7 +62,7 @@ module.exports = {
     }
   },
 
-  // Update user
+  // Updates user
   async updateUser(req, res) {
     try {
       const user = await User.findOneAndUpdate(
@@ -83,7 +83,7 @@ module.exports = {
     }
   },
 
-  // Add friend to user
+  // Adds friend to user
   async addFriend(req, res) {
     try {
       const user = await User.findOneAndUpdate(
@@ -104,7 +104,7 @@ module.exports = {
     }
   },
 
-  // Remove friend from user
+  // Removes friend from user
   async removeFriend(req, res) {
     try {
       const user = await User.findOneAndUpdate(
